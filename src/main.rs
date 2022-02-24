@@ -19,15 +19,11 @@ impl Spectate for Spectator {
     ) -> Result<Response<SendRecordsReply>, Status> {
         let reply = SendRecordsReply::default();
         let mut stream = request.into_inner();
-        //      let count = stream.count().await;
-        //      if count > 0 {
-        //          println!("{}", count);
-        //      };
 
         while let Some(entry) = stream.next().await {
             let data = entry?.log;
-            if let Some(message) = String::from_utf8(data).ok() {
-                println!("{}", message);
+            if let Ok(message) = String::from_utf8(data) {
+                print!("{}", message);
             }
         }
 
